@@ -104,7 +104,7 @@ namespace MonsterHunterDLL
                 {   //unkown error...
                     throw new Exception("An error occured in the DLL (ValidationErrorSetter)", e);
                 }
- 
+
             }
         }
 
@@ -133,7 +133,7 @@ namespace MonsterHunterDLL
             }
         }
 
-       
+
         private void LoadMapFile()
         {// relative path to get the files of map from current diectorty
             string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.map");
@@ -159,16 +159,41 @@ namespace MonsterHunterDLL
                 char[] fileLineArray = fileLine.ToCharArray();
 
                 Array.Resize(ref mapArray, mapArray.Length + 1);
-
-                
                 mapArray[mapArray.GetUpperBound(0)] = fileLineArray;
+
+
+
 
                 //loop into fileLineArray to find the player and the monsters
                 for (int x = 0; x < fileLineArray.Length; x++)
                 {
                     // if the actual char is a player save the x.
                     // Y (mapArray.GetUpperBound(0)) into the player object.
+
+                    if (fileLineArray[x] == 'H')
+                    {
+                        hunter.SetPosition(x, mapArray.GetUpperBound(0)); // not finishied. just temperoro
+                    }
+                    else if (fileLineArray[x] == 'M')
+                    {
+                        monsters.Add(new Monster(x, mapArray.GetUpperBound(0))); //just temperror
+                    }
                 }
+
+
+
+
+                height = mapArray.Length; //set height to the total rows of mapArray
+                if (mapArray.Length > 0) // set width based on the first row
+                {
+                    width = mapArray[0].Length;
+                }
+                else
+                {
+                    width = 0; // set to 0 if there are no rows
+                }
+
+
             }
         }
     }
