@@ -15,8 +15,8 @@ namespace MonsterHunterDLL
     public class Map
     {
         //constants
-        const int MAX_WIDTH = 75;
-        const int MAX_HEIGHT = 30;
+        public const int MAX_WIDTH = 75;
+        public const int MAX_HEIGHT = 30;
 
         //private variables
         private int iWidth = 0;
@@ -41,7 +41,7 @@ namespace MonsterHunterDLL
             }
         }
 
-        public int width
+        public int Width
         {
             get { return iWidth; }
 
@@ -73,7 +73,7 @@ namespace MonsterHunterDLL
                 }
             }
         }
-        public int height
+        public int Height
         {
             get { return iHeight; }
 
@@ -183,14 +183,14 @@ namespace MonsterHunterDLL
 
 
 
-                height = mapArray.Length; //set height to the total rows of mapArray
+                Height = mapArray.Length; //set height to the total rows of mapArray
                 if (mapArray.Length > 0) // set width based on the first row
                 {
-                    width = mapArray[0].Length;
+                    Width = mapArray[0].Length;
                 }
                 else
                 {
-                    width = 0; // set to 0 if there are no rows
+                    Width = 0; // set to 0 if there are no rows
                 }
 
 

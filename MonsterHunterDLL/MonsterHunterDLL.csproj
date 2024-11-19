@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Character.cs" />
+    <Compile Include="Hunter.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Pickaxe.cs" />
     <Compile Include="Potion.cs" />
