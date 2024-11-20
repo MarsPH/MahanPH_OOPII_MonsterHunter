@@ -37,7 +37,7 @@ namespace MonsterHunterDLL
             {
                 sValidationError = "";
                 value = value.Trim();
-                if (value == string.Empty)
+                if (value.Trim() == "")
                 {
                     sValidationError = "Name cannot be empty";
                 }
@@ -47,7 +47,7 @@ namespace MonsterHunterDLL
                 }
                 else
                 {
-                    _name = value;
+                    _name = value.Trim();
                 }
 
             }

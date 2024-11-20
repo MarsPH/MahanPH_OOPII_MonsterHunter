@@ -118,7 +118,7 @@ namespace MonsterHunterDLL
 
                     if (Y > maxY)
                     {
-                        sValidationError = $"Current Y poisiton {y} surpassed the MaxY value of {maxY}; "
+                        sValidationError = $"Current Y poisiton {y} surpassed the MaxY value of {maxY}; ";
                     }
                 }
             }

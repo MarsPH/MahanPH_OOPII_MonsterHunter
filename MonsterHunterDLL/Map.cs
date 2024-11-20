@@ -172,7 +172,7 @@ namespace MonsterHunterDLL
 
                     if (fileLineArray[x] == 'H')
                     {
-                        hunter.SetPosition(x, mapArray.GetUpperBound(0)); // not finishied. just temperoro
+                       //hunet(x, mapArray.GetUpperBound(0)); // not finishied. just temperoro
                     }
                     else if (fileLineArray[x] == 'M')
                     {
