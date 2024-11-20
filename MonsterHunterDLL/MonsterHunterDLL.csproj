@@ -44,6 +44,7 @@
     <Compile Include="Character.cs" />
     <Compile Include="Hunter.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="Monster.cs" />
     <Compile Include="Pickaxe.cs" />
     <Compile Include="Potion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

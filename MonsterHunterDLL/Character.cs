@@ -26,7 +26,8 @@ namespace MonsterHunterDLL
         private const int MAXIMUM_HP = 30;
         private const int MAX_STENGTH = 7;
         private const int MAX_ARMOR = 4;
-        private const int FREEZE_TIME = 1000; //number of milisecond that the charater will be forzen.
+
+        public int FreezeTime; //number of milisecond that the charater will be forzen.
 
         public string sValidationError = ""; // error message 
         public string ValidationError
@@ -188,9 +189,9 @@ namespace MonsterHunterDLL
         protected abstract bool MoveCharacter (int X, int Y, char[][] mapArray); //abstract method to move the character
 
         //constructor
-        Character (int X, int Y, int maxX = 0, int maxY = 0) //
+        public Character (int X, int Y, int maxX = 0, int maxY = 0) //
         {
-
+    
         }
 
         public bool CheckIsCharacterDead() //check if the character is dead (HP lower or equal to zero).

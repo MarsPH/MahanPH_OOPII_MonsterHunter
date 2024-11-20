@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 //////revision history
 ///Mahan Poor Hamidian 2024/11/18 Created Hunter Object
+///Mahan Poor Hamidian 2024/11/20 Created Move Hunter Method
+///
 namespace MonsterHunterDLL
 {
     public class Hunter : Character
@@ -18,6 +20,15 @@ namespace MonsterHunterDLL
         //constants
         private const int MAX_NAME_CHAR = 20;
         private const int MAX_SCORE = 100000;
+        private const int FREEZE_TIME = 1000;
+
+        //Constructor
+        //The constructor should set the hunter freeze time to 1 second. It should also receive a 
+        //mandatory position(X, Y) and it should pass it to the base object constructor
+        public Hunter(int startX, int startY) : base(startX, startY)
+        {
+            FreezeTime = FREEZE_TIME;
+        }
 
         public string Name //  name property which cannot hold more than 20 characters
         {
