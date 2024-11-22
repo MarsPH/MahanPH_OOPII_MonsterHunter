@@ -7,4 +7,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="MonsterHunterDLL\**" />
+    <EmbeddedResource Remove="MonsterHunterDLL\**" />
+    <None Remove="MonsterHunterDLL\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="MonsterHunterDLL\MonsterHunterDLL.csproj" />
+  </ItemGroup>
+
+	<PropertyGroup>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
 </Project>

@@ -11,7 +11,7 @@ namespace MonsterHunterDLL
 {
     public class Monsters
     {
-        private List<Monster> monsters = new List<Monster>();
+        public List<Monster> monsters = new List<Monster>();
         public string sValidationError { get; private set; }
 
         public void AddMonster (Monster monster)
@@ -30,7 +30,7 @@ namespace MonsterHunterDLL
             }
 
             List<Monster> foundMonsters = new List<Monster>();
-            foreach (var monster in foundMonsters)
+            foreach (var monster in monsters)
             {
                 if (monster.X == X && monster.Y == Y)
                 {
@@ -40,7 +40,7 @@ namespace MonsterHunterDLL
 
             if (foundMonsters.Count == 0)
             {
-                sValidationError = $"No monsters found at position ({X}, {Y}).";
+                sValidationError = $"No monesters found at position ({X}, {Y}).";
             }
             return foundMonsters;
         }

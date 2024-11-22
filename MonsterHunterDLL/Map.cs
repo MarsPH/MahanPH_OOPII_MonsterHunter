@@ -108,16 +108,25 @@ namespace MonsterHunterDLL
             }
         }
 
+        private string[] _mapNames; // Backing field for mapNames
         public string[] mapNames //private set ,public get
         {
             get
             {
-                return mapNames;
+                if (_mapNames == null)
+                {
+                    sValidationError = "mapnames is empty to get";
+                    return new string[0];
+                }
+                else
+                {
+                    return _mapNames;
+                }
             }
 
             private set
             {
-                mapNames = value;
+                _mapNames = value;
             }
         }
 
@@ -151,8 +160,9 @@ namespace MonsterHunterDLL
         public char[][] mapArray; //A two-dimension char array to hold the data contained in the selected map file
 
         //I finished on loadMapfFile thinking how to implement the method with parameters and the loop
-        private void loadMapFromFile(string fileName, Hunter hunter, List<Monster> monsters)
+        public void loadMapFromFile(string fileName, Hunter hunter, List<Monster> monsters)
         {
+            mapArray = new char[0][];
             foreach (string fileLine in System.IO.File.ReadAllLines(fileName))
             {
                 //convert the string into a char array
