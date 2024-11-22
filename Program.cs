@@ -1,11 +1,16 @@
 ﻿using MonsterHunterDLL;
 using System.Data;
 using System.Xml.Linq;
-
+////Revision history:
+/// Mahan Poor Hamidian     2024/11/20      Asks Name / Draws Map  \
+/// Mahan Poor Hamidian     2024/11/22      Map chars in colors
+/// Mahan Poor Hamidian     2024/11/22      Info Board
 public class Program
 {
     static void Main(string[] args)
     {
+        //constants
+        const int START_ROW = 3;
         //initalization
         Hunter hunter = new Hunter(0,0);
         
@@ -37,9 +42,9 @@ public class Program
             }
             else
             {
+                Console.WriteLine($"Hello {hunter.Name}");
                 break;
             }
-            Console.WriteLine($"Hello {hunter.Name}");
         }
 
         //Choosing the Map
@@ -84,13 +89,38 @@ public class Program
 
         try
         {
-            map.loadMapFromFile(selectedMap, hunter, monsters.monsters); //
+            map.loadMapFromFile(selectedMap, hunter, monsters.monsters); 
 
+            //Display the info board
+            Console.SetCursorPosition(0,0);
+            Console.WriteLine($"Player: {hunter.Name}");
+            Console.WriteLine($"HP: {hunter.HP}");
+            Console.WriteLine($"Score: {hunter.Score}");
 
-            foreach (char[] row in map.mapArray)
+            Console.SetCursorPosition(0,START_ROW);
+            foreach (char[] row in map.mapArray) // It will loop through the map as array and one by one check if it as M or H in that specfic Char then it will write based on the condition in color
             {
-                Console.WriteLine(new string(row));
+                foreach (char c in row)
+                {
+                    switch (c)
+                    {
+                        case 'M': 
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write(c);
+                            break;
+                        case 'H':
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write(c);
+                            break;
+                        default:
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.Write(c);
+                            break;
+                    }
+                }
+                Console.WriteLine();
             }
+            Console.ResetColor(); // after draw map the color will be resetted
         }
         catch (Exception ex)
         {
