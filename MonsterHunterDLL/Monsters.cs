@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace MonsterHunterDLL
 {
-    public class Monsters
+    public static class Monsters
     {
-        public List<Monster> monsters = new List<Monster>();
-        public string sValidationError { get; private set; }
+        public static List<Monster> monsters = new List<Monster>();
+        public static string sValidationError { get; private set; }
 
-        public void AddMonster (Monster monster)
+        public static void AddMonster (Monster monster)
         {
             monsters.Add(monster);
         }
 
-        public List<Monster> FindMonstersByPosition (int X, int Y) {
+        public static List<Monster> FindMonstersByPosition (int X, int Y) {
             sValidationError = "";
             
             if (X < 0 || Y < 0)

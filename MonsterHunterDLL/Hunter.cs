@@ -25,9 +25,14 @@ namespace MonsterHunterDLL
         //Constructor
         //The constructor should set the hunter freeze time to 1 second. It should also receive a 
         //mandatory position(X, Y) and it should pass it to the base object constructor
-        public Hunter(int startX, int startY) : base(startX, startY)
+        public Hunter(int startX = 0, int startY = 0, int maximumX = 0, int maximumY = 0) : base(startX, startY)
         {
             FreezeTime = FREEZE_TIME;
+            this.X = startX;
+            this.Y = startY;
+            this.maxX = maximumX;
+            this.maxY = maximumY;
+            
         }
 
         public string Name //  name property which cannot hold more than 20 characters

@@ -18,8 +18,8 @@ namespace MonsterHunterDLL
         private int armor;
         private int strength;
 
-        private int maxX; // map max width
-        private int maxY; // map max height
+        protected int maxX; // map max width
+        protected int maxY; // map max height
 
         //const
         private const int MINIMUM_SIZE = 0;
@@ -49,7 +49,7 @@ namespace MonsterHunterDLL
                 {
                     sValidationError = $"X value cannot be less than 0";
                 }
-                else if (value > maxX) //if value bigger than the max.Width
+                else if (maxX != 0 && value > maxX) //if value bigger than the max.Width
                 {
                     sValidationError = $"X cannot be more than {maxX}";
                 }
@@ -70,7 +70,7 @@ namespace MonsterHunterDLL
                 {
                     sValidationError = $"Y value cannot be less than 0";
                 }
-                else if (value > maxY)
+                else if (maxY != Y && value > maxY)
                 {
                     sValidationError = $"Y cannot be more than {maxY}";
                 }
@@ -191,7 +191,10 @@ namespace MonsterHunterDLL
         //constructor
         public Character (int X, int Y, int maxX = 0, int maxY = 0) //
         {
-    
+            this.X = X;
+            this.Y = Y;
+            this.maxX = maxX;
+            this.maxY = maxY;
         }
 
         public bool CheckIsCharacterDead() //check if the character is dead (HP lower or equal to zero).

@@ -15,7 +15,10 @@ namespace MonsterHunterDLL
     {
         //constant
         private int FREEZE_TIME = 2000;
-        
+        public Direction monsterDirection;
+        public int pixelsToMove = 50; //use constant
+
+
         //constructor
 
         // The constructor should set the monster freeze time to 2 second. It should also receive a 
@@ -63,7 +66,13 @@ namespace MonsterHunterDLL
             this.Y = Y;
             mapArray[Y][X] = 'M'; //and the new position as H
             return true;// then it returns true
-         
+        }
+
+
+        public enum Direction
+        {
+            None, Up, Down, Left, Right, //0,1,2,3
         }
     }
 }
+

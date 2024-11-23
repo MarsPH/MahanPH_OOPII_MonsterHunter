@@ -182,28 +182,24 @@ namespace MonsterHunterDLL
 
                     if (fileLineArray[x] == 'H')
                     {
-                       //hunet(x, mapArray.GetUpperBound(0)); // not finishied. just temperoro
+                        //hunet(x, mapArray.GetUpperBound(0)); // not finishied. just temperoro
+                        hunter.X = x;
+                        hunter.Y = mapArray.GetUpperBound(0);
                     }
                     else if (fileLineArray[x] == 'M')
                     {
                         monsters.Add(new Monster(x, mapArray.GetUpperBound(0))); //just temperror
                     }
                 }
-
-
-
-
-                Height = mapArray.Length; //set height to the total rows of mapArray
-                if (mapArray.Length > 0) // set width based on the first row
-                {
-                    Width = mapArray[0].Length;
-                }
-                else
-                {
-                    Width = 0; // set to 0 if there are no rows
-                }
-
-
+            }
+            Height = mapArray.Length; //set height to the total rows of mapArray
+            if (mapArray.Length > 0) // set width based on the first row
+            {
+                Width = mapArray[0].Length;
+            }
+            else
+            {
+                Width = 0; // set to 0 if there are no rows
             }
         }
     }
