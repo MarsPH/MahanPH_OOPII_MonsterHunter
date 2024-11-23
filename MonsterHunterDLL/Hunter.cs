@@ -81,7 +81,7 @@ namespace MonsterHunterDLL
 
         // A method to move the hunter. The hunter can only move where there is no wall and no 
         //monster. When a hunter moves, change immediately the position of the hunter (X, Y). 
-        protected override bool MoveCharacter(int X, int Y, char[][] mapArray) 
+        public override bool MoveCharacter(int X, int Y, char[][] mapArray) 
 
         {
            if (mapArray == null)
@@ -110,12 +110,13 @@ namespace MonsterHunterDLL
             }
 
             // I will put clearing the position here, but it may be in moving
-            
+            /*
             mapArray[this.Y][this.X] = ' ';// it will set the previous position as empty
             this.X = X; 
             this.Y = Y;
             mapArray[Y][X] = 'H'; //and the new position as H
             Console.SetCursorPosition(X, Y);//set cursor as the Hunter
+            */
             return true;// then it returns true
 
         }

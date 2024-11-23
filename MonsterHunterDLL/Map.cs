@@ -162,6 +162,7 @@ namespace MonsterHunterDLL
         //I finished on loadMapfFile thinking how to implement the method with parameters and the loop
         public void loadMapFromFile(string fileName, Hunter hunter, List<Monster> monsters)
         {
+            Console.CursorVisible = false;
             mapArray = new char[0][];
             foreach (string fileLine in System.IO.File.ReadAllLines(fileName))
             {

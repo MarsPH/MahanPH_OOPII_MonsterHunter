@@ -186,7 +186,7 @@ namespace MonsterHunterDLL
             }
         }
 
-        protected abstract bool MoveCharacter (int X, int Y, char[][] mapArray); //abstract method to move the character
+        public abstract bool MoveCharacter (int X, int Y, char[][] mapArray); //abstract method to move the character
 
         //constructor
         public Character (int X, int Y, int maxX = 0, int maxY = 0) //

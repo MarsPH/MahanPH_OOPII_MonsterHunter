@@ -7,6 +7,7 @@ using System.Xml.Linq;
 /// Mahan Poor Hamidian     2024/11/22      Map chars in colors
 /// Mahan Poor Hamidian     2024/11/22      Info Board <summary>
 /// Mahan Poor Hamidian     2024/11/23      Hunter can move in a boundary with the correct position
+/// Mahan Poor Hamidian     2024/11/23      Hunter can move in a boundaries of # with the correct position
 /// </summary>
 public class Program
 {
@@ -30,6 +31,7 @@ public class Program
             Score = 0,
         };
 
+        
 
         //Monsters monsters = new Monsters();
         //variables
@@ -150,7 +152,7 @@ public class Program
 
         while (true)//!gameOver)
         {
-
+            
             keyPressed = Console.ReadKey();
 
             switch (keyPressed.Key)
@@ -158,75 +160,89 @@ public class Program
                 case ConsoleKey.LeftArrow:
                     if (hunter.X > 0)
                     {
-                        //clear the actual player position
-                        Console.SetCursorPosition(hunter.X, hunter.Y);
-                        Console.Write(' ');
+                        if (hunter.MoveCharacter(hunter.X - 1, hunter.Y, map.mapArray)) // minused one to set the future step
+                        {
+                            //clear the actual player position
+                            Console.SetCursorPosition(hunter.X, hunter.Y);
+                            Console.Write(' ');
 
-                        //Move the player to the left in memory
-                        hunter.X--;
+                            //Move the player to the left in memory
+                            hunter.X--;
 
-                        //draw the player at new position
-                        Console.SetCursorPosition(hunter.X, hunter.Y);
-                        Console.Write('H');
-                        Console.ForegroundColor = ConsoleColor.Green;
+                            //draw the player at new position
+                            Console.SetCursorPosition(hunter.X, hunter.Y);
+                            Console.Write('H');
+                            Console.ForegroundColor = ConsoleColor.Green;
 
-                        //startPalerSleepThread();
-
+                            //startPalerSleepThread();
+                        }
                     }
                     break;
 
                 case ConsoleKey.UpArrow:
                     if (hunter.Y > 0)
                     {
-                        //clear the actual player position
-                        Console.SetCursorPosition(hunter.X, hunter.Y);
-                        Console.Write(' ');
+                        if (hunter.MoveCharacter(hunter.X, hunter.Y - 1, map.mapArray))
+                        {
+                            //clear the actual player position
+                            Console.SetCursorPosition(hunter.X, hunter.Y);
+                            Console.Write(' ');
 
-                        //Move the player to the left in memory
-                        hunter.Y--;
+                            //Move the player to the left in memory
+                            hunter.Y--;
 
-                        //draw the player at new position
-                        Console.SetCursorPosition(hunter.X, hunter.Y);
-                        Console.Write('H');
-                        Console.ForegroundColor = ConsoleColor.Green;
+                            //draw the player at new position
+                            Console.SetCursorPosition(hunter.X, hunter.Y);
+                            Console.Write('H');
+                            Console.ForegroundColor = ConsoleColor.Green;
 
-                        //startPalerSleepThread();
-
+                            //startPalerSleepThread();
+                        }
                     }
                     break;
                 case ConsoleKey.RightArrow:
                     if (hunter.X < map.mapArray[hunter.Y].Length - 1)
                     {
-                        //clear the actual player position
-                        Console.SetCursorPosition(hunter.X, hunter.Y);
-                        Console.Write(' ');
+                        if (hunter.MoveCharacter(hunter.X + 1, hunter.Y, map.mapArray))
+                        {
+                            //clear the actual player position
+                            Console.SetCursorPosition(hunter.X, hunter.Y);
+                            Console.Write(' ');
 
-                        //Move the player to the left in memory
-                        hunter.X++;
+                            //Move the player to the left in memory
+                            hunter.X++;
 
-                        //draw the player at new position
-                        Console.SetCursorPosition(hunter.X, hunter.Y);
-                        Console.Write('H');
-                        //startPalerSleepThread();
+                            //draw the player at new position
+                            Console.SetCursorPosition(hunter.X, hunter.Y);
+                            Console.Write('H');
+                            //startPalerSleepThread();
 
+                        }
                     }
                     break;
                 case ConsoleKey.DownArrow:
                     if (hunter.Y < map.mapArray.Length - 1)
                     {
-                        //clear the actual player position
-                        Console.SetCursorPosition(hunter.X, hunter.Y);
-                        Console.Write(' ');
 
-                        //Move the player to the left in memory
-                        hunter.Y++;
+                        if (hunter.MoveCharacter(hunter.X, hunter.Y + 1, map.mapArray))
+                        {
 
-                        //draw the player at new position
-                        Console.SetCursorPosition(hunter.X, hunter.Y);
-                        Console.Write('H');
-                        Console.ForegroundColor = ConsoleColor.Green;
+                            //clear the actual player position
+                            Console.SetCursorPosition(hunter.X, hunter.Y);
+                            Console.Write(' ');
 
-                        //startPalerSleepThread();
+                            //Move the player to the left in memory
+                            hunter.Y++;
+
+                            //draw the player at new position
+                            Console.SetCursorPosition(hunter.X, hunter.Y);
+                            Console.Write('H');
+                            Console.ForegroundColor = ConsoleColor.Green;
+
+                            //startPalerSleepThread();
+
+                        }
+
                     }
                     break;
 

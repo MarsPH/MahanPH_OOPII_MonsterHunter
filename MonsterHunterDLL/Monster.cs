@@ -30,7 +30,7 @@ namespace MonsterHunterDLL
 
         //method to move the monster. The monster can only move where there is no wall and no 
         //hunter.When a monster moves, change immediately its position(X, Y).
-        protected override bool MoveCharacter(int X, int Y, char[][] mapArray)
+        public override bool MoveCharacter(int X, int Y, char[][] mapArray)
 
         {
             if (mapArray == null)
