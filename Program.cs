@@ -1,5 +1,6 @@
 ﻿using MonsterHunterDLL;
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.Threading;
 using System.Xml.Linq;
 ////Revision history:
@@ -8,16 +9,20 @@ using System.Xml.Linq;
 /// Mahan Poor Hamidian     2024/11/22      Info Board <summary>
 /// Mahan Poor Hamidian     2024/11/23      Hunter can move in a boundary with the correct position
 /// Mahan Poor Hamidian     2024/11/23      Hunter can move in a boundaries of # with the correct position
+/// Mahan Poor Hamidian     2024/11/23      Monster can move withing the boundaries
 /// </summary>
 public class Program
 {
+    public static bool canMove = true;
+    public static Map map = new Map(); //create a map
+
     static void Main(string[] args)
     {
+        //variables
         //constants
         const int START_ROW = 3;
         //initalization
 
-        Map map = new Map(); //create a map
         if (map.ValidationError != "") // if map is empty somehow
         {
             Console.WriteLine("Searching for .map files in directory: " + Directory.GetCurrentDirectory());
@@ -31,14 +36,13 @@ public class Program
             Score = 0,
         };
 
-        
+
 
         //Monsters monsters = new Monsters();
         //variables
         string[] mapFiles = map.mapNames; //store the mapnames in mapfiles
         int mapNumber = 1; // index for the listing
         int selectedMapNumber;
-        int currentLevel = 1;
         ConsoleKeyInfo keyPressed;
 
 
@@ -103,12 +107,12 @@ public class Program
 
 
 
-        detectMonsters();
 
         try
         {
             Console.Clear();// to not rewrite the texts on it, i can also change the START_ROW
             map.loadMapFromFile(selectedMap, hunter, Monsters.monsters);
+
 
             //Display the info board
             //Console.SetCursorPosition(0, 0);
@@ -146,105 +150,113 @@ public class Program
         {
             Console.WriteLine($"Error{ex.Message}");
         }
+
         hunter = new Hunter(hunter.X, hunter.Y, map.Width, map.Height);
         Console.SetCursorPosition(hunter.X, hunter.Y);
 
+        detectMonsters();
 
         while (true)//!gameOver)
         {
-            
+
             keyPressed = Console.ReadKey();
 
-            switch (keyPressed.Key)
+
+            if (true)//canMove)
             {
-                case ConsoleKey.LeftArrow:
-                    if (hunter.X > 0)
-                    {
-                        if (hunter.MoveCharacter(hunter.X - 1, hunter.Y, map.mapArray)) // minused one to set the future step
+
+
+                switch (keyPressed.Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        if (hunter.X > 0)
                         {
-                            //clear the actual player position
-                            Console.SetCursorPosition(hunter.X, hunter.Y);
-                            Console.Write(' ');
+                            if (hunter.MoveCharacter(hunter.X - 1, hunter.Y, map.mapArray)) // minused one to set the future step
+                            {
+                                //clear the actual player position
+                                Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.Write(' ');
 
-                            //Move the player to the left in memory
-                            hunter.X--;
+                                //Move the player to the left in memory
+                                hunter.X--;
 
-                            //draw the player at new position
-                            Console.SetCursorPosition(hunter.X, hunter.Y);
-                            Console.Write('H');
-                            Console.ForegroundColor = ConsoleColor.Green;
+                                //draw the player at new position
+                                Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.Write('H');
+                                Console.ForegroundColor = ConsoleColor.Green;
 
-                            //startPalerSleepThread();
+                                startPalerSleepThread();
+                            }
                         }
-                    }
-                    break;
+                        break;
 
-                case ConsoleKey.UpArrow:
-                    if (hunter.Y > 0)
-                    {
-                        if (hunter.MoveCharacter(hunter.X, hunter.Y - 1, map.mapArray))
+                    case ConsoleKey.UpArrow:
+                        if (hunter.Y > 0)
                         {
-                            //clear the actual player position
-                            Console.SetCursorPosition(hunter.X, hunter.Y);
-                            Console.Write(' ');
+                            if (hunter.MoveCharacter(hunter.X, hunter.Y - 1, map.mapArray))
+                            {
+                                //clear the actual player position
+                                Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.Write(' ');
 
-                            //Move the player to the left in memory
-                            hunter.Y--;
+                                //Move the player to the left in memory
+                                hunter.Y--;
 
-                            //draw the player at new position
-                            Console.SetCursorPosition(hunter.X, hunter.Y);
-                            Console.Write('H');
-                            Console.ForegroundColor = ConsoleColor.Green;
+                                //draw the player at new position
+                                Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.Write('H');
+                                Console.ForegroundColor = ConsoleColor.Green;
 
-                            //startPalerSleepThread();
+                                startPalerSleepThread();
+                            }
                         }
-                    }
-                    break;
-                case ConsoleKey.RightArrow:
-                    if (hunter.X < map.mapArray[hunter.Y].Length - 1)
-                    {
-                        if (hunter.MoveCharacter(hunter.X + 1, hunter.Y, map.mapArray))
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if (hunter.X < map.mapArray[hunter.Y].Length - 1)
                         {
-                            //clear the actual player position
-                            Console.SetCursorPosition(hunter.X, hunter.Y);
-                            Console.Write(' ');
+                            if (hunter.MoveCharacter(hunter.X + 1, hunter.Y, map.mapArray))
+                            {
+                                //clear the actual player position
+                                Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.Write(' ');
 
-                            //Move the player to the left in memory
-                            hunter.X++;
+                                //Move the player to the left in memory
+                                hunter.X++;
 
-                            //draw the player at new position
-                            Console.SetCursorPosition(hunter.X, hunter.Y);
-                            Console.Write('H');
-                            //startPalerSleepThread();
+                                //draw the player at new position
+                                Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.Write('H');
+                                startPalerSleepThread();
 
+                            }
                         }
-                    }
-                    break;
-                case ConsoleKey.DownArrow:
-                    if (hunter.Y < map.mapArray.Length - 1)
-                    {
-
-                        if (hunter.MoveCharacter(hunter.X, hunter.Y + 1, map.mapArray))
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (hunter.Y < map.mapArray.Length - 1)
                         {
 
-                            //clear the actual player position
-                            Console.SetCursorPosition(hunter.X, hunter.Y);
-                            Console.Write(' ');
+                            if (hunter.MoveCharacter(hunter.X, hunter.Y + 1, map.mapArray))
+                            {
 
-                            //Move the player to the left in memory
-                            hunter.Y++;
+                                //clear the actual player position
+                                Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.Write(' ');
 
-                            //draw the player at new position
-                            Console.SetCursorPosition(hunter.X, hunter.Y);
-                            Console.Write('H');
-                            Console.ForegroundColor = ConsoleColor.Green;
+                                //Move the player to the left in memory
+                                hunter.Y++;
 
-                            //startPalerSleepThread();
+                                //draw the player at new position
+                                Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.Write('H');
+                                Console.ForegroundColor = ConsoleColor.Green;
+
+                                startPalerSleepThread();
+
+                            }
 
                         }
-
-                    }
-                    break;
+                        break;
+                }
 
             }
 
@@ -259,6 +271,13 @@ public class Program
         //in the project, it goes into gameENgine
         //          List<monster> allMonsters = new List<monster>
         //create a new monster
+        foreach (Monster m in Monsters.monsters) // 
+        {
+            Console.SetCursorPosition(m.X, m.Y);
+            Console.Write('M');
+            m.monsterDirection = Monster.Direction.Left;
+        }
+        /*
         Monster newMonster = new Monster(7, 1);
         newMonster.monsterDirection = Monster.Direction.Left; //random in the project
                                                               //add it to the list of monsters
@@ -277,7 +296,7 @@ public class Program
         //draw player
         Console.SetCursorPosition(newMonster.X, newMonster.Y);
         Console.Write('M');
-
+        */
         //Version 1, using a Thread
         //Start the thread
         Thread moveUpThread = new Thread(new ThreadStart(moveMonstersSlowlyInChildThread));//there is no this because it is static
@@ -296,33 +315,117 @@ public class Program
             {
                 if (thisMonster.monsterDirection == Monster.Direction.Left)
                 {
-                    Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                    Console.Write(' ');
+                    if (thisMonster.MoveCharacter(thisMonster.X - 1, thisMonster.Y, map.mapArray))
+                    {
+                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        Console.Write(' ');
 
-                    thisMonster.X--;
+                        thisMonster.X--;
 
-                    Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                    Console.Write('M');
+                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        Console.Write('M');
+                    }
+                 
                 }
 
                 if (thisMonster.monsterDirection == Monster.Direction.Right)
                 {
-                    Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                    Console.Write(' ');
+                    if (thisMonster.MoveCharacter(thisMonster.X + 1, thisMonster.Y, map.mapArray))
+                    {
+                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        Console.Write(' ');
 
-                    thisMonster.X++;
+                        thisMonster.X++;
 
-                    Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                    Console.Write('M');
+                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        Console.Write('M');
+                    }
+                 
+                }
+                if (thisMonster.monsterDirection == Monster.Direction.Up)
+                {
+                    if (thisMonster.MoveCharacter(thisMonster.X, thisMonster.Y - 1, map.mapArray))
+                    {
+                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        Console.Write(' ');
+
+                        thisMonster.Y--;
+
+                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        Console.Write('M');
+                    }
+                 
+                }
+                if (thisMonster.monsterDirection == Monster.Direction.Down)
+                {
+                    if (thisMonster.MoveCharacter(thisMonster.X, thisMonster.Y + 1, map.mapArray))
+                    {
+                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        Console.Write(' ');
+
+                        thisMonster.Y++;
+
+                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        Console.Write('M');
+                    }
+               
                 }
 
             }
             //freeze monsters for two seconds
-            Thread.Sleep(2000); //use constant in the proj 
+            Thread.Sleep(100); //use constant in the proj 
 
         }
-        //Version 2 using a Timer
-        //EnableTimer();
+        foreach (Monster thisMonster in Monsters.monsters)
+        {
+            //TODOL choose Randomly a new direction (check walls collisions, re-roll if yes)
+            thisMonster.monsterDirection = Monster.Direction.Left;
+            int randomDirection = RandomSingleton.Next(0, 5);
+            switch (randomDirection)
+            {
+                case 0:
+                    thisMonster.monsterDirection = Monster.Direction.None;
+                    break;
+                case 1:
+                    thisMonster.monsterDirection = Monster.Direction.Up;//Up, Down, Left, Right,
+                    break;
+                case 2:
+                    thisMonster.monsterDirection = Monster.Direction.Down;//Up, Down, Left, Right,
+                    break;
+                case 3:
+                    thisMonster.monsterDirection = Monster.Direction.Left;//Up, Down, Left, Right,
+                    break;
+                case 4:
+                    thisMonster.monsterDirection = Monster.Direction.Right;//Up, Down, Left, Right,
+                    break;
 
+            }
+
+        }
+
+        Thread moveUpThread = new Thread(new ThreadStart(moveMonstersSlowlyInChildThread));
+        moveUpThread.IsBackground = true; // if close main thread, it will close the child thread
+        moveUpThread.Start();
+
+    }
+
+    static void startPalerSleepThread()
+    {
+        Thread moveUpThread = new Thread(new ThreadStart(playerSleep));
+        moveUpThread.IsBackground = true; // if close main thread, it will close the child thread
+        moveUpThread.Start();
+    }
+    static void playerSleep()
+    {
+        canMove = false;
+        Thread.Sleep(3000); //skeeping the thread
+        canMove = true;
+        /*
+         * keyPressed = Console.ReadKey();
+         * if (canMove)
+         * ...
+         * right after you moved the player = startPlayerSleepThread()
+         * 
+         */
     }
 }
