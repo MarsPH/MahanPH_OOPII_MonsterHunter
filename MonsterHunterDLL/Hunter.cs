@@ -5,8 +5,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 //////revision history
+///Note to myself I can remove most of the "this" keywords, idk why i kept writing them
 ///Mahan Poor Hamidian 2024/11/18 Created Hunter Object
 ///Mahan Poor Hamidian 2024/11/20 Created Move Hunter Method
+///Mahan Poor Hamidian 2024/11/24 Sword / SHeild / Pickaxe Added
 ///
 namespace MonsterHunterDLL
 {
@@ -29,6 +31,7 @@ namespace MonsterHunterDLL
         //Items
         public Shield shield;
         public Sword sword;
+        public Pickaxe pickaxe;
         //Constructor
         //The constructor should set the hunter freeze time to 1 second. It should also receive a 
         //mandatory position(X, Y) and it should pass it to the base object constructor
@@ -130,6 +133,23 @@ namespace MonsterHunterDLL
             {
                 sValidationError = "Hitting a wall.";
                 isAttacking = false;
+                if (pickaxe != null) //if pickaxe exist in the hand of the player
+                {
+                    if (!pickaxe.UseAndIsBroken()) //if pickaxe is healthy
+                    {
+                        mapArray[this.Y + YVelocity][this.X + XVelocity] = ' ';//make the place that player wants to break in the map as ' '
+                        Console.SetCursorPosition(this.X + XVelocity, this.Y + YVelocity);// set the cursor in the target postion
+                        Console.ForegroundColor = ConsoleColor.Gray;// set the foreground as gray and not green
+                        Console.Write(' ');// remove the wall and set is as empty
+                        Messages.Add($"{this.Name} destroyed a Wall!");//anounce
+                    }
+                    else //if pickaxe got the chance of breaking then make it null and break
+                    {
+                        pickaxe = null;//make it nukk
+                        Messages.Add($"Pickaxe is Broken :(");//anounce
+
+                    }
+                }
                 return false; // if the hunter hitting a wall it will return false
             }
             if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'M') //fight Monsters
@@ -147,7 +167,7 @@ namespace MonsterHunterDLL
                 //Item-Findings O.O
                 if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'h') //found a shield
                 {
-                    shield = null;//make the previous one vanis
+                    shield = null;//make the previous one vanish
                     shield = new Shield();// make a new one with new strnegth
                     Messages.Add($"{this.Name} got Shield! Shield Power: {shield.ShieldStrength} "); //announce it
                     Info = $"+{ITEM_SCORE}"; //announce it in the info in the board(not the actions)
@@ -156,17 +176,22 @@ namespace MonsterHunterDLL
                 }
                 if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'w') //found a sword
                 {
-                    sword = null;//make it vanish
+                    sword = null;//make the previouis vanish
                     sword = new Sword();//make a new one with new strength --> I hate this word. always spell mistake
                     Messages.Add($"{this.Name} got Sword! Sword Power: {sword.SwordStrength} ");// announce it
                     Info = $"+{ITEM_SCORE}";//announce it in the info in the board(not the actions)
                     Score += ITEM_SCORE;
 
                 }
-                if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'w')//found a pickaxe
+                if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'x')//found a pickaxe
                 {
+                    pickaxe = null; //make the prevoius one vanish
+                    pickaxe = new Pickaxe();
+                    Messages.Add($"{this.Name} got Pickaxe!");// announce it
+                    Info = $"+{ITEM_SCORE}";//announce it in the info in the board(not the actions)
+                    Score += ITEM_SCORE;
 
-                } 
+                }
                 //Movement
                 mapArray[this.Y][this.X] = ' '; 
                 Console.SetCursorPosition(this.X, this.Y);

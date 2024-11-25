@@ -13,9 +13,9 @@ namespace MonsterHunterDLL
         //constants
         const int BREAK_CHANCE = 3;
 
-        public bool use()
+        public bool UseAndIsBroken()
         {
-            bool isBroken = RandomSingleton.Next(1, BREAK_CHANCE) == 1; //check if the pickaxe is broken
+            bool isBroken = RandomSingleton.Next(1, BREAK_CHANCE + 1) == 1; //check if the pickaxe is broken
             return isBroken;
         }
     }
