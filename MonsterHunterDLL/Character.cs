@@ -167,7 +167,7 @@ namespace MonsterHunterDLL
         }
         public int Strength
         {
-            get { return strength; }
+            get { return strength = RandomSingleton.Next(0, MAX_STENGTH + 1); } 
             set
             {
                 sValidationError = "";
@@ -181,7 +181,7 @@ namespace MonsterHunterDLL
                 }
                 else
                 {
-                    strength = value;
+                    strength = value; // i may  chaange set
                 }
             }
         }

@@ -20,6 +20,8 @@ namespace MonsterHunterDLL
         public Direction monsterDirection;
         public int pixelsToMove = 50; //use constant
         public bool canAttack;
+        public bool isRemoved = false;
+        public int worth = 100;
 
         //constructor
 
@@ -32,8 +34,8 @@ namespace MonsterHunterDLL
             this.Y = startY;
             this.maxX = maximumX;
             this.maxY = maximumY;
-            this.HP = RandomSingleton.Next(0, 31);
-            this.Armor = RandomSingleton.Next(0, 5);
+            this.HP = RandomSingleton.Next(1, 31);
+            this.Armor = RandomSingleton.Next(1, 5);
         }
 
         //method to move the monster. The monster can only move where there is no wall and no 
@@ -99,8 +101,8 @@ namespace MonsterHunterDLL
                 sValidationError = "Hitting a wall.";
                 return false; // if the hunter hitting a wall it will return false
             }
-   
-           
+
+
             else
             {
                 mapArray[this.Y][this.X] = ' ';
@@ -119,12 +121,12 @@ namespace MonsterHunterDLL
                 return true;// then it returns true
 
             }
-            
+
         }
 
         public void Attack(Hunter target, Shield shield = null)
         {
-            this.Strength = RandomSingleton.Next(0, 7);
+            //this.Strength = RandomSingleton.Next(0, 7);
             if (this.HP <= 0)
             {
                 return;
@@ -149,10 +151,10 @@ namespace MonsterHunterDLL
                 }
             }
             target.Messages.Add($"{target.Name} counterattacked Monster(HP:{this.HP}) with the power of {this.Strength}");
-            if (!target.canAttack)
+            if (!target.isAttacking)
             {
                 this.HP = this.HP + this.Armor - target.Strength;
-                
+
             }
             //target.Messages.Add($"Monster now has {this.HP}");
             target.Info = $"-{this.Strength} Damage!";

@@ -18,6 +18,9 @@ using System;
 /// Mahan Poor Hamidian     2024/11/24      Combot of Hunter
 /// Mahan Poor Hamidian     2024/11/24      Red HP
 /// Mahan Poor Hamidian     2024/11/24      InforBoard Bug Fixed
+/// Mahan Poor Hamidian     2024/11/24      Monster can be dead!
+/// Mahan Poor Hamidian     2024/11/24      Monster info will be added!
+/// 
 /// 
 /// 
 /// 
@@ -300,7 +303,7 @@ public class Program
                 }
 
             }
-            if (hunter.canAttack)
+            if (hunter.isAttacking)
             {
                 hunter.Attack();
                 startPalerSleepThread();
@@ -357,7 +360,7 @@ public class Program
         {
             Monster thisMonster = Monsters.monsters[index];
             // if there are pixels left to move
-            if (thisMonster.pixelsToMove > 0)
+            if (thisMonster.pixelsToMove > 0 && !thisMonster.CheckIsCharacterDead())
             {
                 if (thisMonster.monsterDirection == Monster.Direction.Left)
                 {
@@ -452,12 +455,27 @@ public class Program
 
 
                 }
-                if (thisMonster.canAttack && !hunter.canAttack)
+                
+                if (thisMonster.canAttack && !hunter.isAttacking && hunter.HP > 0)
                 {
                     thisMonster.Attack(hunter); //shield to be added
                 }
                 UpdateInfoBoard();
 
+            }
+            else //if the monster dont have more movements or their heart is 0 they will disapper/dead
+            {
+                if (!thisMonster.isRemoved) // Monster is already removed?
+                {
+                    Console.SetCursorPosition(thisMonster.X, thisMonster.Y);//set cursor to the defeated monster
+                    map.mapArray[thisMonster.Y][thisMonster.X] = ' '; // also remove the monster in the map
+                    Console.Write(' ');// remove the dead monster on the map
+                    hunter.Messages.Add($"Monster Destroyed +{thisMonster.worth} Score!");// set a new messge that mosnter is dead
+                    hunter.Info = $"+{thisMonster.worth} Score!"; // I put this score added in the info
+                    hunter.Score += thisMonster.worth;// add the hunter score to the worth of the monster (I can make it randomize but in the project is 100)
+                    thisMonster.isRemoved = true; // this monster isremoved true so it wont constantly make this char in the map and console empty.
+                }
+      
             }
             //freeze monsters for two seconds
             //Thread.Sleep(thisMonster.FreezeTime); //use constant in the proj 
@@ -521,6 +539,7 @@ public class Program
         Console.WriteLine($"Player: {hunter.Name}\t \bMap:{selectedMapNumber}");
         if (hunter.HP <= 5)
         {
+            ClearCurrentConsoleLine();
             Console.Write("HP: ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(hunter.HP);
@@ -529,6 +548,7 @@ public class Program
         }
         else
         {
+            ClearCurrentConsoleLine();
             Console.WriteLine($"HP: {hunter.HP}\t\tLevel:{1}");//currentLevel to be added?
         }
         Console.WriteLine($"Score: {hunter.Score} \tInfos:{hunter.Info}");//info to be added
@@ -545,5 +565,12 @@ public class Program
             }
         }
 
+    }
+    public static void ClearCurrentConsoleLine()
+    {
+        int currentLineCursor = Console.CursorTop;
+        Console.SetCursorPosition(0, Console.CursorTop);
+        Console.Write(new string(' ', Console.WindowWidth));
+        Console.SetCursorPosition(0, currentLineCursor);
     }
 }

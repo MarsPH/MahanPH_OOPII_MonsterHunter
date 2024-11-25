@@ -17,7 +17,7 @@ namespace MonsterHunterDLL
         private int _score;
         private ConsoleKeyInfo keyPressed;
         public List<String> Messages = new List<String>();
-        public bool canAttack;
+        public bool isAttacking;
         public static List<Monster> FoundMonsters;
         public string Info;
         //constants
@@ -126,20 +126,25 @@ namespace MonsterHunterDLL
             if (mapArray[this.Y + YVelocity][this.X + XVelocity] == '#')
             {
                 sValidationError = "Hitting a wall.";
+                isAttacking = false;
                 return false; // if the hunter hitting a wall it will return false
             }
             if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'M')
             {
                 FoundMonsters = Monsters.FindMonstersByPosition(this.X + XVelocity, this.Y + YVelocity);
                 sValidationError = "Hitting a Monster.";
-                canAttack = true;
+                isAttacking = true;
                 return false; // if the hunter hitting a wall it will return false
             }
+         
 
             else
             {
+                isAttacking = false;
+
                 if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'h')
                 {
+                    shield = null;
                     shield = new Shield();
                     Messages.Add($"{this.Name} got Shield! Shield Power: {shield.ShieldStrength} ");
                 }
@@ -165,19 +170,24 @@ namespace MonsterHunterDLL
         public void Attack()
         {
             
-            this.Strength = RandomSingleton.Next(0, 7);
+            //this.Strength = RandomSingleton.Next(0, 7);
             Messages.Add($"{this.Name} Attacked with the power of {this.Strength}");
 
             for (int i = 0; i < FoundMonsters.Count; i++)
             {
 
                 FoundMonsters[i].HP -= this.Strength;
+                if (FoundMonsters[i].CheckIsCharacterDead())
+                {
+                    FoundMonsters[i] = null;
+                    continue;
+                }
                 FoundMonsters[i].Attack(this);
                 
 
             }
             FoundMonsters.Clear();
-            this.canAttack = false;
+            this.isAttacking = false;
         }
     }
 
