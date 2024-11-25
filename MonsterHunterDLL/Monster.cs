@@ -129,28 +129,33 @@ namespace MonsterHunterDLL
             {
                 return;
             }
-            if (shield == null)
+            if (target.shield == null)
             {
                 target.Messages.Add($"Monster Attacked {target.Name}(HP:{target.HP}) with the power of {this.Strength}");
                 target.HP = target.HP + target.Armor - this.Strength;
                 //target.Messages.Add($"{target.Name} now has {target.HP} HP");
 
             }
-            if (shield != null)
+            if (target.shield != null)
             {
                 target.Messages.Add($"Monster Attacked {target.Name}(HP:{target.HP} Armor:{target.Armor}) with the power of {this.Strength}");
-                target.HP = target.HP + shield.ShieldStrength + target.Armor - this.Strength;
+                target.HP = target.HP + target.shield.ShieldStrength + target.Armor - this.Strength;
                 //target.Messages.Add($"{target.Name} now has {target.HP} HP");
 
-                shield.Defend();
+                if (target.shield.DefendAndIsBroken() || target.shield.ShieldStrength <= 0)
+                {
+                    target.shield = null;
+                    target.Messages.Add($"{target.Name}'s Shield Broken!");
+                }
             }
             target.Messages.Add($"{target.Name} counterattacked Monster(HP:{this.HP}) with the power of {this.Strength}");
             if (!target.canAttack)
             {
                 this.HP = this.HP + this.Armor - target.Strength;
-
+                
             }
             //target.Messages.Add($"Monster now has {this.HP}");
+            target.Info = $"-{this.Strength} Damage!";
             this.canAttack = false;
         }
 

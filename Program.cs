@@ -17,7 +17,7 @@ using System;
 /// Mahan Poor Hamidian     2024/11/24      Combat of Monster
 /// Mahan Poor Hamidian     2024/11/24      Combot of Hunter
 /// Mahan Poor Hamidian     2024/11/24      Red HP
-/// 
+/// Mahan Poor Hamidian     2024/11/24      InforBoard Bug Fixed
 /// 
 /// 
 /// 
@@ -531,14 +531,17 @@ public class Program
         {
             Console.WriteLine($"HP: {hunter.HP}\t\tLevel:{1}");//currentLevel to be added?
         }
-        Console.WriteLine($"Score: {hunter.Score} \tInfos:");//info to be added
-
+        Console.WriteLine($"Score: {hunter.Score} \tInfos:{hunter.Info}");//info to be added
+        
         Console.WriteLine();
         if (hunter.Messages.Count != 0)
         {
-            for (int i = hunter.Messages.Count; i > (hunter.Messages.Count - 3); i--)
+            for (int i = hunter.Messages.Count - 3; i < hunter.Messages.Count; i++) // i can reverse this
             {
-                Console.WriteLine($"- {hunter.Messages[i - 1]}");
+                if (i >= 0)
+                {
+                    Console.WriteLine($"- {hunter.Messages[i].PadRight(Console.WindowWidth - 2)}");
+                }
             }
         }
 

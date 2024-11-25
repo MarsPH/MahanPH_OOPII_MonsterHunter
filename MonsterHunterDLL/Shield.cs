@@ -24,7 +24,7 @@ namespace MonsterHunterDLL
             shieldStrength = RandomSingleton.Next(MIN_DEFENSE, MAX_DEFENSE + 1);
         }
 
-        public bool Defend()
+        public bool DefendAndIsBroken()
         {
             bool isBroken = RandomSingleton.Next(1, BREAK_CHANCE+ 1) == 1;
             return isBroken;

@@ -19,12 +19,13 @@ namespace MonsterHunterDLL
         public List<String> Messages = new List<String>();
         public bool canAttack;
         public static List<Monster> FoundMonsters;
-
+        public string Info;
         //constants
         private const int MAX_NAME_CHAR = 20;
         private const int MAX_SCORE = 100000;
         private const int FREEZE_TIME = 1000;
-
+        //Items
+        public Shield shield;
         //Constructor
         //The constructor should set the hunter freeze time to 1 second. It should also receive a 
         //mandatory position(X, Y) and it should pass it to the base object constructor
@@ -134,8 +135,14 @@ namespace MonsterHunterDLL
                 canAttack = true;
                 return false; // if the hunter hitting a wall it will return false
             }
+
             else
             {
+                if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'h')
+                {
+                    shield = new Shield();
+                    Messages.Add($"{this.Name} got Shield! Shield Power: {shield.ShieldStrength} ");
+                }
                 mapArray[this.Y][this.X] = ' ';
                 Console.SetCursorPosition(this.X, this.Y);
                 Console.ForegroundColor = ConsoleColor.Gray;
