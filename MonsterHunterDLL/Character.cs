@@ -70,7 +70,7 @@ namespace MonsterHunterDLL
                 {
                     sValidationError = $"Y value cannot be less than 0";
                 }
-                else if (maxY != Y && value > maxY)
+                else if (maxY != 0 && value > maxY)
                 {
                     sValidationError = $"Y cannot be more than {maxY}";
                 }

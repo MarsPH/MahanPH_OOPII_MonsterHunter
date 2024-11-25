@@ -3,6 +3,7 @@ using System.Data;
 using System.Diagnostics.Metrics;
 using System.Threading;
 using System.Xml.Linq;
+using System;
 ////Revision history:
 /// Mahan Poor Hamidian     2024/11/20      Asks Name / Draws Map  \
 /// Mahan Poor Hamidian     2024/11/22      Map chars in colors
@@ -10,14 +11,32 @@ using System.Xml.Linq;
 /// Mahan Poor Hamidian     2024/11/23      Hunter can move in a boundary with the correct position
 /// Mahan Poor Hamidian     2024/11/23      Hunter can move in a boundaries of # with the correct position
 /// Mahan Poor Hamidian     2024/11/23      Monster can move withing the boundaries
+/// Mahan Poor Hamidian     2024/11/23      Monster Bug Up/down fix / 
+/// Mahan Poor Hamidian     2024/11/24      Changed Move Method
+/// Mahan Poor Hamidian     2024/11/24      Board Info
+/// Mahan Poor Hamidian     2024/11/24      Combat of Monster
+/// Mahan Poor Hamidian     2024/11/24      Combot of Hunter
+/// Mahan Poor Hamidian     2024/11/24      Red HP
+/// 
+/// 
+/// 
+/// 
 /// </summary>
 public class Program
 {
     public static bool canMove = true;
     public static Map map = new Map(); //create a map
-
+    public static Hunter hunter = new Hunter()
+    {
+        HP = 30,
+        Score = 0,
+    };
+    public static int infoBoardStartLine;
+    public static int selectedMapNumber;
     static void Main(string[] args)
     {
+       
+
         //variables
         //constants
         const int START_ROW = 3;
@@ -30,11 +49,7 @@ public class Program
             return;
         }
 
-        Hunter hunter = new Hunter()
-        {
-            HP = 30,
-            Score = 0,
-        };
+
 
 
 
@@ -42,7 +57,7 @@ public class Program
         //variables
         string[] mapFiles = map.mapNames; //store the mapnames in mapfiles
         int mapNumber = 1; // index for the listing
-        int selectedMapNumber;
+
         ConsoleKeyInfo keyPressed;
 
 
@@ -144,6 +159,7 @@ public class Program
                 Console.WriteLine();
             }
             Console.ResetColor(); // after draw map the color will be resetted
+            infoBoardStartLine = Console.CursorTop + 3;
             //action board to be added here..
         }
         catch (Exception ex)
@@ -151,7 +167,11 @@ public class Program
             Console.WriteLine($"Error{ex.Message}");
         }
 
-        hunter = new Hunter(hunter.X, hunter.Y, map.Width, map.Height);
+        hunter = new Hunter(hunter.X, hunter.Y, map.Width, map.Height)
+        {
+            HP = 30,
+            Name = hunter.Name,
+        };
         Console.SetCursorPosition(hunter.X, hunter.Y);
 
         detectMonsters();
@@ -161,8 +181,7 @@ public class Program
 
             keyPressed = Console.ReadKey();
 
-
-            if (true)//canMove)
+            if (canMove)//canMove)
             {
 
 
@@ -171,20 +190,25 @@ public class Program
                     case ConsoleKey.LeftArrow:
                         if (hunter.X > 0)
                         {
-                            if (hunter.MoveCharacter(hunter.X - 1, hunter.Y, map.mapArray)) // minused one to set the future step
+                            if (hunter.MoveCharacter(-1, 0, map.mapArray)) // minused one to set the future step
                             {
+                                /*
                                 //clear the actual player position
                                 Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.ForegroundColor = ConsoleColor.Gray;
                                 Console.Write(' ');
+                                map.mapArray[hunter.Y][hunter.X] = ' ';
+
 
                                 //Move the player to the left in memory
                                 hunter.X--;
 
                                 //draw the player at new position
                                 Console.SetCursorPosition(hunter.X, hunter.Y);
-                                Console.Write('H');
                                 Console.ForegroundColor = ConsoleColor.Green;
-
+                                Console.Write('H');
+                                map.mapArray[hunter.Y][hunter.X] = 'H';
+                                */
                                 startPalerSleepThread();
                             }
                         }
@@ -193,20 +217,25 @@ public class Program
                     case ConsoleKey.UpArrow:
                         if (hunter.Y > 0)
                         {
-                            if (hunter.MoveCharacter(hunter.X, hunter.Y - 1, map.mapArray))
+                            if (hunter.MoveCharacter(0, -1, map.mapArray))
                             {
+                                /*
                                 //clear the actual player position
                                 Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.ForegroundColor = ConsoleColor.Gray;
                                 Console.Write(' ');
+                                map.mapArray[hunter.Y][hunter.X] = ' ';
+
 
                                 //Move the player to the left in memory
                                 hunter.Y--;
 
                                 //draw the player at new position
                                 Console.SetCursorPosition(hunter.X, hunter.Y);
-                                Console.Write('H');
                                 Console.ForegroundColor = ConsoleColor.Green;
-
+                                Console.Write('H');
+                                map.mapArray[hunter.Y][hunter.X] = 'H';
+                                */
                                 startPalerSleepThread();
                             }
                         }
@@ -214,18 +243,25 @@ public class Program
                     case ConsoleKey.RightArrow:
                         if (hunter.X < map.mapArray[hunter.Y].Length - 1)
                         {
-                            if (hunter.MoveCharacter(hunter.X + 1, hunter.Y, map.mapArray))
+                            if (hunter.MoveCharacter(+1, 0, map.mapArray))
                             {
+                                /*
                                 //clear the actual player position
                                 Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.ForegroundColor = ConsoleColor.Gray;
                                 Console.Write(' ');
+                                map.mapArray[hunter.Y][hunter.X] = ' ';
+
 
                                 //Move the player to the left in memory
                                 hunter.X++;
 
                                 //draw the player at new position
                                 Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.Write('H');
+                                map.mapArray[hunter.Y][hunter.X] = 'H';
+                                */
                                 startPalerSleepThread();
 
                             }
@@ -235,21 +271,26 @@ public class Program
                         if (hunter.Y < map.mapArray.Length - 1)
                         {
 
-                            if (hunter.MoveCharacter(hunter.X, hunter.Y + 1, map.mapArray))
+                            if (hunter.MoveCharacter(0, +1, map.mapArray))
                             {
-
+                                /*
                                 //clear the actual player position
                                 Console.SetCursorPosition(hunter.X, hunter.Y);
+                                Console.ForegroundColor = ConsoleColor.Gray;
                                 Console.Write(' ');
+                                map.mapArray[hunter.Y][hunter.X] = ' ';
+
+
 
                                 //Move the player to the left in memory
                                 hunter.Y++;
 
                                 //draw the player at new position
                                 Console.SetCursorPosition(hunter.X, hunter.Y);
-                                Console.Write('H');
                                 Console.ForegroundColor = ConsoleColor.Green;
-
+                                Console.Write('H');
+                                map.mapArray[hunter.Y][hunter.X] = 'H';
+                                */
                                 startPalerSleepThread();
 
                             }
@@ -257,6 +298,12 @@ public class Program
                         }
                         break;
                 }
+
+            }
+            if (hunter.canAttack)
+            {
+                hunter.Attack();
+                startPalerSleepThread();
 
             }
 
@@ -275,7 +322,6 @@ public class Program
         {
             Console.SetCursorPosition(m.X, m.Y);
             Console.Write('M');
-            m.monsterDirection = Monster.Direction.Left;
         }
         /*
         Monster newMonster = new Monster(7, 1);
@@ -315,72 +361,112 @@ public class Program
             {
                 if (thisMonster.monsterDirection == Monster.Direction.Left)
                 {
-                    if (thisMonster.MoveCharacter(thisMonster.X - 1, thisMonster.Y, map.mapArray))
+                    if (thisMonster.MoveCharacter(-1, 0, map.mapArray))
                     {
-                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                        Console.Write(' ');
+                        //Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        //Console.ForegroundColor = ConsoleColor.Gray;
 
-                        thisMonster.X--;
+                        //Console.Write(' ');
+                        //map.mapArray[thisMonster.Y][thisMonster.X] = ' ';// to remove the previous position in the map
 
-                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                        Console.Write('M');
+                        //thisMonster.X--;
+
+                        //Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        //Console.ForegroundColor = ConsoleColor.Red;
+
+                        //Console.Write('M');
+                        //map.mapArray[thisMonster.Y][thisMonster.X] = 'M'; //to change the position in map
+
+                        Thread.Sleep(thisMonster.FreezeTime);
                     }
-                 
+
+
                 }
 
                 if (thisMonster.monsterDirection == Monster.Direction.Right)
                 {
-                    if (thisMonster.MoveCharacter(thisMonster.X + 1, thisMonster.Y, map.mapArray))
+                    if (thisMonster.MoveCharacter(1, 0, map.mapArray))//(thisMonster.X + 1, thisMonster.Y, map.mapArray))
                     {
-                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                        Console.Write(' ');
+                        //Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        //Console.ForegroundColor = ConsoleColor.Gray;
 
-                        thisMonster.X++;
+                        //Console.Write(' ');
+                        //map.mapArray[thisMonster.Y][thisMonster.X] = ' ';
 
-                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                        Console.Write('M');
+                        //thisMonster.X++;
+
+                        //Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        //Console.ForegroundColor = ConsoleColor.Red;
+
+                        //Console.Write('M');
+                        //map.mapArray[thisMonster.Y][thisMonster.X] = 'M'; //to change the position in map
+
+                        Thread.Sleep(thisMonster.FreezeTime);
                     }
-                 
+
+
                 }
                 if (thisMonster.monsterDirection == Monster.Direction.Up)
                 {
-                    if (thisMonster.MoveCharacter(thisMonster.X, thisMonster.Y - 1, map.mapArray))
+                    if (thisMonster.MoveCharacter(0, -1, map.mapArray))//(thisMonster.X, thisMonster.Y - 1, map.mapArray))
                     {
-                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                        Console.Write(' ');
+                        //Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        //Console.ForegroundColor = ConsoleColor.Gray;
 
-                        thisMonster.Y--;
+                        //Console.Write(' ');
+                        //map.mapArray[thisMonster.Y][thisMonster.X] = ' ';
 
-                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                        Console.Write('M');
+                        //thisMonster.Y--;
+
+                        //Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        //Console.ForegroundColor = ConsoleColor.Red;
+
+                        //Console.Write('M');
+                        //map.mapArray[thisMonster.Y][thisMonster.X] = 'M'; //to change the position in map
+
+                        Thread.Sleep(thisMonster.FreezeTime);
                     }
-                 
+
+
                 }
                 if (thisMonster.monsterDirection == Monster.Direction.Down)
                 {
-                    if (thisMonster.MoveCharacter(thisMonster.X, thisMonster.Y + 1, map.mapArray))
+                    if (thisMonster.MoveCharacter(0, 1, map.mapArray))//(thisMonster.X, thisMonster.Y + 1, map.mapArray))
                     {
-                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                        Console.Write(' ');
+                        //Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        //Console.ForegroundColor = ConsoleColor.Gray;
 
-                        thisMonster.Y++;
+                        //Console.Write(' ');
+                        //map.mapArray[thisMonster.Y][thisMonster.X] = ' ';
 
-                        Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
-                        Console.Write('M');
+                        //thisMonster.Y++;
+
+                        //Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                        //Console.ForegroundColor = ConsoleColor.Red;
+
+                        //Console.Write('M');
+                        //map.mapArray[thisMonster.Y][thisMonster.X] = 'M'; //to change the position in map
+
+                        Thread.Sleep(thisMonster.FreezeTime);
                     }
-               
+
+
                 }
+                if (thisMonster.canAttack && !hunter.canAttack)
+                {
+                    thisMonster.Attack(hunter); //shield to be added
+                }
+                UpdateInfoBoard();
 
             }
             //freeze monsters for two seconds
-            Thread.Sleep(100); //use constant in the proj 
+            //Thread.Sleep(thisMonster.FreezeTime); //use constant in the proj 
 
         }
         foreach (Monster thisMonster in Monsters.monsters)
         {
             //TODOL choose Randomly a new direction (check walls collisions, re-roll if yes)
-            thisMonster.monsterDirection = Monster.Direction.Left;
-            int randomDirection = RandomSingleton.Next(0, 5);
+            int randomDirection = RandomSingleton.Next(1, 5); // for now i omitted none moving
             switch (randomDirection)
             {
                 case 0:
@@ -418,7 +504,7 @@ public class Program
     static void playerSleep()
     {
         canMove = false;
-        Thread.Sleep(3000); //skeeping the thread
+        Thread.Sleep(hunter.FreezeTime); //skeeping the thread
         canMove = true;
         /*
          * keyPressed = Console.ReadKey();
@@ -427,5 +513,34 @@ public class Program
          * right after you moved the player = startPlayerSleepThread()
          * 
          */
+    }
+    static void UpdateInfoBoard()
+    {
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.SetCursorPosition(0, infoBoardStartLine);
+        Console.WriteLine($"Player: {hunter.Name}\t \bMap:{selectedMapNumber}");
+        if (hunter.HP <= 5)
+        {
+            Console.Write("HP: ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(hunter.HP);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine($"\t\tLevel:{1}");
+        }
+        else
+        {
+            Console.WriteLine($"HP: {hunter.HP}\t\tLevel:{1}");//currentLevel to be added?
+        }
+        Console.WriteLine($"Score: {hunter.Score} \tInfos:");//info to be added
+
+        Console.WriteLine();
+        if (hunter.Messages.Count != 0)
+        {
+            for (int i = hunter.Messages.Count; i > (hunter.Messages.Count - 3); i--)
+            {
+                Console.WriteLine($"- {hunter.Messages[i - 1]}");
+            }
+        }
+
     }
 }

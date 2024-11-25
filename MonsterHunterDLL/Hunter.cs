@@ -16,6 +16,9 @@ namespace MonsterHunterDLL
         private string _name;
         private int _score;
         private ConsoleKeyInfo keyPressed;
+        public List<String> Messages = new List<String>();
+        public bool canAttack;
+        public static List<Monster> FoundMonsters;
 
         //constants
         private const int MAX_NAME_CHAR = 20;
@@ -33,6 +36,7 @@ namespace MonsterHunterDLL
             this.maxX = maximumX;
             this.maxY = maximumY;
             
+
         }
 
         public string Name //  name property which cannot hold more than 20 characters
@@ -64,7 +68,7 @@ namespace MonsterHunterDLL
             set
             {
                 sValidationError = "";
-                if ( value < 0)
+                if (value < 0)
                 {
                     sValidationError = "Value cannot be less than 0";
                 }
@@ -81,34 +85,35 @@ namespace MonsterHunterDLL
 
         // A method to move the hunter. The hunter can only move where there is no wall and no 
         //monster. When a hunter moves, change immediately the position of the hunter (X, Y). 
-        public override bool MoveCharacter(int X, int Y, char[][] mapArray) 
+        public override bool MoveCharacter(int XVelocity, int YVelocity, char[][] mapArray)
 
         {
-           if (mapArray == null)
+            if (mapArray == null)
             {
                 sValidationError = "Map is missing for Moving Hunter";
             }
 
-           if (X < 0 || X >= MaxX) // if the x is 0 or it is bigger than the map
-            {
-                sValidationError = $"{X} is out of the boudnds";
-            }
-            if (Y < 0 || Y >= MaxY) //if the Y is 0 or it is bigger than the length of the map
-            {
-                sValidationError = $"{X} is out of the boudnds"; 
-            }
+            /*
+            if (X < 0 || X >= MaxX) // if the x is 0 or it is bigger than the map
+             {
+                 sValidationError = $"{X} is out of the boudnds";
+             }
+             if (Y < 0 || Y >= MaxY) //if the Y is 0 or it is bigger than the length of the map
+             {
+                 sValidationError = $"{X} is out of the boudnds"; 
+             }
 
-            if (mapArray[Y][X] == '#'){
-                sValidationError = "Hitting a wall.";
-                return false; // if the hunter hitting a wall it will return false
-            }
+             if (mapArray[Y][X] == '#'){
+                 sValidationError = "Hitting a wall.";
+                 return false; // if the hunter hitting a wall it will return false
+             }
 
-            if (mapArray[Y][X] == 'M')
-            {
-                sValidationError = "Hunter Attemps to move into Monster";
-                return false;
-            }
-
+             if (mapArray[Y][X] == 'M')
+             {
+                 sValidationError = "Hunter Attemps to move into Monster";
+                 return false;
+             }
+            */
             // I will put clearing the position here, but it may be in moving
             /*
             mapArray[this.Y][this.X] = ' ';// it will set the previous position as empty
@@ -117,8 +122,56 @@ namespace MonsterHunterDLL
             mapArray[Y][X] = 'H'; //and the new position as H
             Console.SetCursorPosition(X, Y);//set cursor as the Hunter
             */
-            return true;// then it returns true
+            if (mapArray[this.Y + YVelocity][this.X + XVelocity] == '#')
+            {
+                sValidationError = "Hitting a wall.";
+                return false; // if the hunter hitting a wall it will return false
+            }
+            if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'M')
+            {
+                FoundMonsters = Monsters.FindMonstersByPosition(this.X + XVelocity, this.Y + YVelocity);
+                sValidationError = "Hitting a Monster.";
+                canAttack = true;
+                return false; // if the hunter hitting a wall it will return false
+            }
+            else
+            {
+                mapArray[this.Y][this.X] = ' ';
+                Console.SetCursorPosition(this.X, this.Y);
+                Console.ForegroundColor = ConsoleColor.Gray;
+
+                Console.Write(' ');
+
+                this.X += XVelocity;
+                this.Y += YVelocity;
+
+                mapArray[this.Y][this.X] = 'H';
+                Console.SetCursorPosition(this.X, this.Y);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write('H');
+                return true;// then it returns true
+
+            }
+            
 
         }
+        public void Attack()
+        {
+            
+            this.Strength = RandomSingleton.Next(0, 7);
+            Messages.Add($"{this.Name} Attacked with the power of {this.Strength}");
+
+            for (int i = 0; i < FoundMonsters.Count; i++)
+            {
+
+                FoundMonsters[i].HP -= this.Strength;
+                FoundMonsters[i].Attack(this);
+                
+
+            }
+            FoundMonsters.Clear();
+            this.canAttack = false;
+        }
     }
+
 }
