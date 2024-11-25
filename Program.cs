@@ -18,8 +18,8 @@ using System;
 /// Mahan Poor Hamidian     2024/11/24      Combot of Hunter
 /// Mahan Poor Hamidian     2024/11/24      Red HP
 /// Mahan Poor Hamidian     2024/11/24      InforBoard Bug Fixed
-/// Mahan Poor Hamidian     2024/11/24      Monster can be dead!
-/// Mahan Poor Hamidian     2024/11/24      Monster info will be added!
+/// Mahan Poor Hamidian     2024/11/25      Monster can be dead!
+/// Mahan Poor Hamidian     2024/11/25      Monster info will be added!
 /// 
 /// 
 /// 

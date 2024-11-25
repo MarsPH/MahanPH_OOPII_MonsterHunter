@@ -20,12 +20,15 @@ namespace MonsterHunterDLL
         public bool isAttacking;
         public static List<Monster> FoundMonsters;
         public string Info;
+        
         //constants
         private const int MAX_NAME_CHAR = 20;
         private const int MAX_SCORE = 100000;
-        private const int FREEZE_TIME = 1000;
+        private const int FREEZE_TIME = 100;
+        private const int ITEM_SCORE = 50;
         //Items
         public Shield shield;
+        public Sword sword;
         //Constructor
         //The constructor should set the hunter freeze time to 1 second. It should also receive a 
         //mandatory position(X, Y) and it should pass it to the base object constructor
@@ -123,13 +126,13 @@ namespace MonsterHunterDLL
             mapArray[Y][X] = 'H'; //and the new position as H
             Console.SetCursorPosition(X, Y);//set cursor as the Hunter
             */
-            if (mapArray[this.Y + YVelocity][this.X + XVelocity] == '#')
+            if (mapArray[this.Y + YVelocity][this.X + XVelocity] == '#')// wall collision
             {
                 sValidationError = "Hitting a wall.";
                 isAttacking = false;
                 return false; // if the hunter hitting a wall it will return false
             }
-            if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'M')
+            if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'M') //fight Monsters
             {
                 FoundMonsters = Monsters.FindMonstersByPosition(this.X + XVelocity, this.Y + YVelocity);
                 sValidationError = "Hitting a Monster.";
@@ -141,14 +144,31 @@ namespace MonsterHunterDLL
             else
             {
                 isAttacking = false;
-
-                if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'h')
+                //Item-Findings O.O
+                if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'h') //found a shield
                 {
-                    shield = null;
-                    shield = new Shield();
-                    Messages.Add($"{this.Name} got Shield! Shield Power: {shield.ShieldStrength} ");
+                    shield = null;//make the previous one vanis
+                    shield = new Shield();// make a new one with new strnegth
+                    Messages.Add($"{this.Name} got Shield! Shield Power: {shield.ShieldStrength} "); //announce it
+                    Info = $"+{ITEM_SCORE}"; //announce it in the info in the board(not the actions)
+                    Score += ITEM_SCORE;
+
                 }
-                mapArray[this.Y][this.X] = ' ';
+                if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'w') //found a sword
+                {
+                    sword = null;//make it vanish
+                    sword = new Sword();//make a new one with new strength --> I hate this word. always spell mistake
+                    Messages.Add($"{this.Name} got Sword! Sword Power: {sword.SwordStrength} ");// announce it
+                    Info = $"+{ITEM_SCORE}";//announce it in the info in the board(not the actions)
+                    Score += ITEM_SCORE;
+
+                }
+                if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'w')//found a pickaxe
+                {
+
+                } 
+                //Movement
+                mapArray[this.Y][this.X] = ' '; 
                 Console.SetCursorPosition(this.X, this.Y);
                 Console.ForegroundColor = ConsoleColor.Gray;
 
@@ -174,9 +194,29 @@ namespace MonsterHunterDLL
             Messages.Add($"{this.Name} Attacked with the power of {this.Strength}");
 
             for (int i = 0; i < FoundMonsters.Count; i++)
-            {
+            {   
+                if (sword != null) {
+                    if (!sword.AttackAndIsBroken())//if sword is healthy ==> DO a sowrd attack!
+                    {
+                        Messages.Add($"{this.Name} Attacked Sword the power of {this.Strength} + {sword.SwordStrength}");
 
-                FoundMonsters[i].HP -= this.Strength;
+                        FoundMonsters[i].HP -= this.Strength + sword.SwordStrength;
+
+                    }
+                    else
+                    {
+                        Messages.Add($"Sword Destroyed!");
+                        sword = null; //make sword null
+
+
+                    }
+                }
+                else
+                {
+                    FoundMonsters[i].HP -= this.Strength; //basic attack
+                }
+       
+               
                 if (FoundMonsters[i].CheckIsCharacterDead())
                 {
                     FoundMonsters[i] = null;
