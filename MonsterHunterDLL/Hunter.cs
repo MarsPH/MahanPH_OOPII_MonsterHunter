@@ -18,11 +18,14 @@ namespace MonsterHunterDLL
         private string _name;
         private int _score;
         private ConsoleKeyInfo keyPressed;
-        public List<String> Messages = new List<String>();
+        public List<string> Messages = new List<string>();
         public bool isAttacking;
         public static List<Monster> FoundMonsters;
         public string Info;
-        
+        public int maximumHP = MAXIMUM_HP;
+        //potions
+        public bool IsInvisible = false;
+
         //constants
         private const int MAX_NAME_CHAR = 20;
         private const int MAX_SCORE = 100000;
@@ -89,6 +92,7 @@ namespace MonsterHunterDLL
                 }
             }
         }
+
 
         // A method to move the hunter. The hunter can only move where there is no wall and no 
         //monster. When a hunter moves, change immediately the position of the hunter (X, Y). 

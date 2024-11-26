@@ -23,7 +23,7 @@ namespace MonsterHunterDLL
 
         //const
         private const int MINIMUM_SIZE = 0;
-        private const int MAXIMUM_HP = 30;
+        public  const int MAXIMUM_HP = 30;
         private const int MAX_STENGTH = 7;
         private const int MAX_ARMOR = 4;
 
