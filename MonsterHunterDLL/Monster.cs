@@ -93,7 +93,7 @@ namespace MonsterHunterDLL
                mapArray[this.Y][this.X - 1] == 'H') // if anywhere around the Monster there is a H. Perform for attack
             {
                 canAttack = true;
-                sValidationError = "Hunter Attemps to move into Monster";
+                sValidationError = "Monster Attemps to move into Hunter";
                 return false;
             }
             if (mapArray[this.Y + Yvelocity][this.X + Xvelocity] == '#')

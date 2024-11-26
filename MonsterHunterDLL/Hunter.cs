@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 //////revision history
 ///Note to myself I can remove most of the "this" keywords, idk why i kept writing them
@@ -25,16 +26,18 @@ namespace MonsterHunterDLL
         public int maximumHP = MAXIMUM_HP;
         //potions
         public bool IsInvisible = false;
-
+        public ConsoleColor skinColor = ConsoleColor.Green; //default color green
         //constants
         private const int MAX_NAME_CHAR = 20;
         private const int MAX_SCORE = 100000;
-        private const int FREEZE_TIME = 100;
+        private const int FREEZE_TIME = 1000;
         private const int ITEM_SCORE = 50;
+        private const int POTION_EFFECT_TIME = 10000;
         //Items
         public Shield shield;
         public Sword sword;
         public Pickaxe pickaxe;
+        public Potion potion;
         //Constructor
         //The constructor should set the hunter freeze time to 1 second. It should also receive a 
         //mandatory position(X, Y) and it should pass it to the base object constructor
@@ -156,7 +159,7 @@ namespace MonsterHunterDLL
                 }
                 return false; // if the hunter hitting a wall it will return false
             }
-            if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'M') //fight Monsters
+            if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'M' && !IsInvisible) //fight Monsters if hunter not invisble
             {
                 FoundMonsters = Monsters.FindMonstersByPosition(this.X + XVelocity, this.Y + YVelocity);
                 sValidationError = "Hitting a Monster.";
@@ -196,8 +199,49 @@ namespace MonsterHunterDLL
                     Score += ITEM_SCORE;
 
                 }
+                if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'p')//found a potion
+                {
+                    potion = null; //make the prevoius one vanish
+                    potion = new Potion();
+                    Messages.Add($"{this.Name} Potion!");// announce it
+                    Info = $"+{ITEM_SCORE}";//announce it in the info in the board(not the actions)
+                    Score += ITEM_SCORE;
+
+                    switch ((int)potion.huntersPotionType)
+                    {
+                        case 0://Strength
+                            PotionStrength strengthPotion = new PotionStrength();
+                            StartPotionSleep( strengthPotion );
+                            break;
+                        case 1: //Poison
+                            PotionPoison poisonPotion = new PotionPoison();
+                            StartPotionSleep(poisonPotion);
+
+                            break;
+                        case 2: //Invis
+                            PotionInvisible potionInvisible = new PotionInvisible();
+                            StartPotionSleep(potionInvisible);
+
+                            break;
+                        case 3: //Speed
+                            PotionFast potionSpeed = new PotionFast();
+                            potionSpeed.StartPotion(this);
+                            StartPotionSleep(potionSpeed);
+
+                            break;
+                    }
+                    
+                }
                 //Movement
-                mapArray[this.Y][this.X] = ' '; 
+                if (IsInvisible && mapArray[this.Y][this.X] == 'M')
+                {
+
+                }
+                else
+                {
+                    mapArray[this.Y][this.X] = ' ';
+                }
+
                 Console.SetCursorPosition(this.X, this.Y);
                 Console.ForegroundColor = ConsoleColor.Gray;
 
@@ -208,8 +252,9 @@ namespace MonsterHunterDLL
 
                 mapArray[this.Y][this.X] = 'H';
                 Console.SetCursorPosition(this.X, this.Y);
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = skinColor; //color of the skin when driniking potion!
                 Console.Write('H');
+
                 return true;// then it returns true
 
             }
@@ -257,6 +302,27 @@ namespace MonsterHunterDLL
             }
             FoundMonsters.Clear();
             this.isAttacking = false;
+
+        }
+        void StartPotionSleep(IPotionStates potion)
+        {
+            Thread moveUpThread = new Thread(new ThreadStart(() => PotionSleep(potion)));
+            moveUpThread.IsBackground = true; // if close main thread, it will close the child thread
+            moveUpThread.Start();
+        }
+         void PotionSleep(IPotionStates potion)
+        {
+            potion.StartPotion(this);
+            Thread.Sleep(POTION_EFFECT_TIME); //sleeping the thread
+            potion.StopPotion(this);
+
+            /*
+             * keyPressed = Console.ReadKey();
+             * if (canMove)
+             * ...
+             * right after you moved the player = startPlayerSleepThread()
+             * 
+             */
         }
     }
 

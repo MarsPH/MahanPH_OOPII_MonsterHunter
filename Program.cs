@@ -38,7 +38,7 @@ public class Program
     public static int selectedMapNumber;
     static void Main(string[] args)
     {
-       
+
 
         //variables
         //constants
@@ -118,7 +118,13 @@ public class Program
 
             break;
         }
-
+        Console.Clear();
+        Console.Write("Please use ");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("Arrows");
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.WriteLine(" to move the player");
+        Thread.Sleep(3000);
         //Map Loading
         string selectedMap = mapFiles[selectedMapNumber - 1];
         Console.WriteLine($"\nLoading Current Map {selectedMap}...");
@@ -162,7 +168,7 @@ public class Program
                 Console.WriteLine();
             }
             Console.ResetColor(); // after draw map the color will be resetted
-            infoBoardStartLine = Console.CursorTop + 3;
+            infoBoardStartLine = Console.CursorTop + 1;
             //action board to be added here..
         }
         catch (Exception ex)
@@ -455,8 +461,8 @@ public class Program
 
 
                 }
-                
-                if (thisMonster.canAttack && !hunter.isAttacking && hunter.HP > 0)
+
+                if (thisMonster.canAttack && !hunter.isAttacking && hunter.HP > 0 && !hunter.IsInvisible) //if hunter is not invisible
                 {
                     thisMonster.Attack(hunter); //shield to be added
                 }
@@ -475,7 +481,7 @@ public class Program
                     hunter.Score += thisMonster.worth;// add the hunter score to the worth of the monster (I can make it randomize but in the project is 100)
                     thisMonster.isRemoved = true; // this monster isremoved true so it wont constantly make this char in the map and console empty.
                 }
-      
+
             }
             //freeze monsters for two seconds
             //Thread.Sleep(thisMonster.FreezeTime); //use constant in the proj 
@@ -552,7 +558,13 @@ public class Program
             Console.WriteLine($"HP: {hunter.HP}\t\tLevel:{1}");//currentLevel to be added?
         }
         Console.WriteLine($"Score: {hunter.Score} \tInfos:{hunter.Info}");//info to be added
-        
+        Console.WriteLine($"Strength: {hunter.Strength}\t \bArmor:{hunter.Armor}\t   MoveDelay:{hunter.FreezeTime}");
+        ClearCurrentConsoleLine();
+        Console.WriteLine(
+    $"Sword: {(hunter.sword != null ? hunter.sword.SwordStrength.ToString() : "None")}  " +
+    $"Shield: {(hunter.shield != null ? hunter.shield.ShieldStrength.ToString() : "None")}  " +
+    $"Pickaxe: {(hunter.pickaxe != null ? "Has" : "None")}"
+);
         Console.WriteLine();
         if (hunter.Messages.Count != 0)
         {

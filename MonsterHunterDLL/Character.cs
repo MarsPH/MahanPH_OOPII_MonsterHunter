@@ -16,7 +16,7 @@ namespace MonsterHunterDLL
 
         private int hp; // current hp
         private int armor;
-        private int strength;
+        private int strength = RandomSingleton.Next(0, MAX_STENGTH + 1);
 
         protected int maxX; // map max width
         protected int maxY; // map max height
@@ -167,16 +167,18 @@ namespace MonsterHunterDLL
         }
         public int Strength
         {
-            get { return strength = RandomSingleton.Next(0, MAX_STENGTH + 1); } 
+            get { return strength; } 
             set
             {
                 sValidationError = "";
                 if (value < 0)
                 {
+                    strength = 0;
                     sValidationError = "Strenth cannot be less than 0";
                 }
                 if (value > MAX_STENGTH)
                 {
+                    strength = MAX_STENGTH;
                     sValidationError = $"Strength cannot be more than {MAX_STENGTH}";
                 }
                 else

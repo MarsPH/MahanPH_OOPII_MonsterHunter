@@ -15,18 +15,20 @@ namespace MonsterHunterDLL
     {
         void StartPotion(Hunter hunter);
         void StopPotion(Hunter hunter);
+
+
     }
     public class Potion
     {
-        private const int MAX_ROLL = 0;
+        private const int MAX_ROLL = 7;
 
-        public PotionType myPotionType { get; private set; }
+        public PotionType huntersPotionType { get; private set; }
 
         //constructor
         public Potion()
         { //selects a potion type based on the dice roll
             int rolledNumber = RandomSingleton.Next(1, MAX_ROLL);
-            myPotionType = checkPotionType(rolledNumber);
+            huntersPotionType = checkPotionType(rolledNumber);
         }
 
         private PotionType checkPotionType(int rolledNumber)
@@ -57,11 +59,16 @@ namespace MonsterHunterDLL
             hunter.Strength *= 2;
             hunter.Armor = (int)(hunter.Armor * 1.5);
             hunter.HP = hunter.maximumHP;
+            hunter.skinColor = ConsoleColor.Magenta;//new clor
+            hunter.Messages.Add($"{hunter.Name} drank Strength Potion and new Power:{hunter.Strength}, Armor:{hunter.Armor} ");
+
         }
         public void StopPotion(Hunter hunter)
         {
             hunter.Strength /= 2;
             hunter.Armor = (int)(hunter.Armor / 1.5);
+            hunter.skinColor = ConsoleColor.Green;//reset
+
             //no hp lowered as it is a oneTime thing,
         }
     }
@@ -72,11 +79,15 @@ namespace MonsterHunterDLL
             hunter.Strength /= 2; //his/her attack and defense are decreased by 50%.
             hunter.HP -= 5;//his/her HP is dropped by 5
             hunter.FreezeTime = (int)(hunter.FreezeTime * 1.5); //FreezeTime by 25% increase
+            hunter.skinColor = ConsoleColor.Blue;
+            hunter.Messages.Add($"No!{hunter.Name} drank Poison Potion and new Power:{hunter.Strength}");
+
         }
         public void StopPotion(Hunter hunter)
         {
             hunter.Strength *= 2;
             hunter.FreezeTime = (int)(hunter.FreezeTime / 1.5); //FreezeTime by 25% decrease
+            hunter.skinColor = ConsoleColor.Green;
 
             //no hp lowered as it is a oneTime thing,
         }
@@ -86,10 +97,16 @@ namespace MonsterHunterDLL
         public void StartPotion(Hunter hunter)
         {
             hunter.IsInvisible = true;
+            hunter.skinColor = ConsoleColor.DarkGray;//new clor
+            hunter.Messages.Add("Enjoy Invisibilty Cloak Potter!");
+
+
         }
         public void StopPotion(Hunter hunter)
         {
             hunter.IsInvisible = false;
+            hunter.skinColor = ConsoleColor.Green;//new clor
+
         }
     }
 
@@ -98,10 +115,15 @@ namespace MonsterHunterDLL
         public void StartPotion(Hunter hunter)
         {
             hunter.FreezeTime /= 2;
+            hunter.skinColor = ConsoleColor.Yellow;//new clor
+            hunter.Messages.Add($"{hunter.HP} drank flash Potion");
+
         }
         public void StopPotion(Hunter hunter)
         {
             hunter.FreezeTime *= 2;
+            hunter.skinColor = ConsoleColor.Green;//new clor
+
         }
     }
 
@@ -125,4 +147,5 @@ namespace MonsterHunterDLL
         Invisibility, //makes the hunter able to walk through monsters without engaging
         Speed //makes the hunter 2 times faster
     }
+
 }
