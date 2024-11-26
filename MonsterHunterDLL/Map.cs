@@ -108,15 +108,15 @@ namespace MonsterHunterDLL
             }
         }
 
-        private string[] _mapNames; // Backing field for mapNames
-        public string[] mapNames //private set ,public get
+        private List<string> _mapNames; // Backing field for mapNames
+        public List<string> mapNames //private set ,public get
         {
             get
             {
                 if (_mapNames == null)
                 {
                     sValidationError = "mapnames is empty to get";
-                    return new string[0];
+                    return _mapNames = new List<string>();
                 }
                 else
                 {
@@ -145,15 +145,15 @@ namespace MonsterHunterDLL
 
         private void LoadMapFile()
         {// relative path to get the files of map from current diectorty
-            string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.map");
+            List <string> files = new List<string>(Directory.GetFiles(Directory.GetCurrentDirectory(), "*.map"));
 
-            if (files.Length == 0)
+            if (files.Count == 0)
             {
                 sValidationError = "No .map file found in LoadMapFile";
             }
             else
             {
-                mapNames = Array.ConvertAll(files, Path.GetFileName);
+                mapNames = files.ConvertAll(Path.GetFileName);
             }
         }
 

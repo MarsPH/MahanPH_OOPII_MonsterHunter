@@ -24,13 +24,16 @@ namespace MonsterHunterDLL
         public static List<Monster> FoundMonsters;
         public string Info;
         public int maximumHP = MAXIMUM_HP;
+        public  bool wonLevel = false; // if won level
+        public int level = 1;
+
         //potions
         public bool IsInvisible = false;
         public ConsoleColor skinColor = ConsoleColor.Green; //default color green
         //constants
         private const int MAX_NAME_CHAR = 20;
         private const int MAX_SCORE = 100000;
-        private const int FREEZE_TIME = 1000;
+        private const int FREEZE_TIME = 100;
         private const int ITEM_SCORE = 50;
         private const int POTION_EFFECT_TIME = 10000;
         //Items
@@ -48,7 +51,7 @@ namespace MonsterHunterDLL
             this.Y = startY;
             this.maxX = maximumX;
             this.maxY = maximumY;
-            
+
 
         }
 
@@ -105,6 +108,18 @@ namespace MonsterHunterDLL
             if (mapArray == null)
             {
                 sValidationError = "Map is missing for Moving Hunter";
+            }
+            if (CheckIsCharacterDead())
+            {
+                mapArray[this.Y][this.X] = 'X';
+
+
+                Console.SetCursorPosition(this.X, this.Y);
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                Console.Write('X');
+                return false;
+
             }
 
             /*
@@ -166,7 +181,7 @@ namespace MonsterHunterDLL
                 isAttacking = true;
                 return false; // if the hunter hitting a wall it will return false
             }
-         
+
 
             else
             {
@@ -211,7 +226,7 @@ namespace MonsterHunterDLL
                     {
                         case 0://Strength
                             PotionStrength strengthPotion = new PotionStrength();
-                            StartPotionSleep( strengthPotion );
+                            StartPotionSleep(strengthPotion);
                             break;
                         case 1: //Poison
                             PotionPoison poisonPotion = new PotionPoison();
@@ -230,7 +245,12 @@ namespace MonsterHunterDLL
 
                             break;
                     }
-                    
+
+                }
+                if (mapArray[this.Y + YVelocity][this.X + XVelocity] == 'G')
+                {
+                    wonLevel = true;
+                    level += 1;
                 }
                 //Movement
                 if (IsInvisible && mapArray[this.Y][this.X] == 'M')
@@ -258,18 +278,19 @@ namespace MonsterHunterDLL
                 return true;// then it returns true
 
             }
-            
+
 
         }
         public void Attack()
         {
-            
+
             //this.Strength = RandomSingleton.Next(0, 7);
             Messages.Add($"{this.Name} Attacked with the power of {this.Strength}");
 
             for (int i = 0; i < FoundMonsters.Count; i++)
-            {   
-                if (sword != null) {
+            {
+                if (sword != null)
+                {
                     if (!sword.AttackAndIsBroken())//if sword is healthy ==> DO a sowrd attack!
                     {
                         Messages.Add($"{this.Name} Attacked Sword the power of {this.Strength} + {sword.SwordStrength}");
@@ -289,15 +310,15 @@ namespace MonsterHunterDLL
                 {
                     FoundMonsters[i].HP -= this.Strength; //basic attack
                 }
-       
-               
+
+
                 if (FoundMonsters[i].CheckIsCharacterDead())
                 {
                     FoundMonsters[i] = null;
                     continue;
                 }
                 FoundMonsters[i].Attack(this);
-                
+
 
             }
             FoundMonsters.Clear();
@@ -310,7 +331,7 @@ namespace MonsterHunterDLL
             moveUpThread.IsBackground = true; // if close main thread, it will close the child thread
             moveUpThread.Start();
         }
-         void PotionSleep(IPotionStates potion)
+        void PotionSleep(IPotionStates potion)
         {
             potion.StartPotion(this);
             Thread.Sleep(POTION_EFFECT_TIME); //sleeping the thread

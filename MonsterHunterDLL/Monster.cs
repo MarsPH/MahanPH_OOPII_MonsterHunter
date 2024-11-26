@@ -131,6 +131,17 @@ namespace MonsterHunterDLL
             {
                 return;
             }
+            if (target.HP <= 0)
+            {
+                
+
+
+                Console.SetCursorPosition(target.X, target.Y);
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                Console.Write('X');
+                return;
+            }
             if (target.shield == null)
             {
                 target.Messages.Add($"Monster Attacked {target.Name}(HP:{target.HP}) with the power of {this.Strength}");
