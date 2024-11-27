@@ -9,8 +9,11 @@
 
   <ItemGroup>
     <Compile Remove="MonsterHunterDLL\**" />
+    <Compile Remove="MonsterHunterForms\**" />
     <EmbeddedResource Remove="MonsterHunterDLL\**" />
+    <EmbeddedResource Remove="MonsterHunterForms\**" />
     <None Remove="MonsterHunterDLL\**" />
+    <None Remove="MonsterHunterForms\**" />
   </ItemGroup>
 
   <ItemGroup>

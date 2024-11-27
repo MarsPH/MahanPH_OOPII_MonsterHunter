@@ -478,9 +478,9 @@ public class Program
 
             if (hunter.level == 2)
             {
-                mapFiles.RemoveAt(firstLevelIndex);
+                mapFiles.RemoveAt(firstLevelIndex); // removing the already played map
             }
-            if (hunter.level == 3)
+            if (hunter.level == 3)// removing the already played map
             {
                 
                 mapFiles.RemoveAt(secondLevelIndex);
@@ -550,6 +550,8 @@ public class Program
             Console.WriteLine($"\nLoading Current Map {selectedMap}...");
 
             Console.Clear();// to not rewrite the texts on it, i can also change the START_ROW
+            Console.CursorVisible = false;
+
             map.loadMapFromFile(selectedMap, hunter, Monsters.monsters);
 
 

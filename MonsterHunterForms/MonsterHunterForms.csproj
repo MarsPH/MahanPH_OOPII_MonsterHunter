@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameForm.Designer.cs">
+      <DependentUpon>GameForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MenuForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,22 +60,26 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GameForm.resx">
+      <DependentUpon>GameForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MenuForm.resx">
       <DependentUpon>MenuForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -78,6 +88,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MonsterHunterDLL\MonsterHunterDLL.csproj">
+      <Project>{c2f9503a-05f7-465b-8b92-a678ff30c99a}</Project>
+      <Name>MonsterHunterDLL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Monster.jpg" />
+    <None Include="Resources\Monster.bmp" />
+    <None Include="Resources\pickaxe.png" />
+    <None Include="Resources\potion.png" />
+    <None Include="Resources\shield.png" />
+    <None Include="Resources\sword.png" />
+    <None Include="Resources\Goal.png" />
+    <Content Include="Resources\icons8-draco-malfoy-480 %281%29.png" />
+    <Content Include="Resources\Hunter.png" />
+    <Content Include="Resources\wall.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
