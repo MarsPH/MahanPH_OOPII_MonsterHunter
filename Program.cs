@@ -148,7 +148,17 @@ public class Program
 
                             //Console.Write('M');
                             //map.mapArray[thisMonster.Y][thisMonster.X] = 'M'; //to change the position in map
+                            //map.mapArray[thisMonster.Y][thisMonster.X] = ' ';
 
+                            Console.SetCursorPosition(thisMonster.X + 1, thisMonster.Y);
+                            Console.ForegroundColor = ConsoleColor.Gray;
+
+                            Console.Write(' ');
+
+                            //map.mapArray[thisMonster.Y][thisMonster.X] = 'M';
+                            Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write('M');
                             Thread.Sleep(thisMonster.FreezeTime);
                         }
 
@@ -172,7 +182,18 @@ public class Program
 
                             //Console.Write('M');
                             //map.mapArray[thisMonster.Y][thisMonster.X] = 'M'; //to change the position in map
+                            //map.mapArray[thisMonster.Y][thisMonster.X] = ' ';
 
+                            Console.SetCursorPosition(thisMonster.X - 1, thisMonster.Y);
+                            Console.ForegroundColor = ConsoleColor.Gray;
+
+                            Console.Write(' ');
+
+
+                            //map.mapArray[thisMonster.Y][thisMonster.X] = 'M';
+                            Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write('M');
                             Thread.Sleep(thisMonster.FreezeTime);
                         }
 
@@ -195,7 +216,18 @@ public class Program
 
                             //Console.Write('M');
                             //map.mapArray[thisMonster.Y][thisMonster.X] = 'M'; //to change the position in map
+                            //map.mapArray[thisMonster.Y][thisMonster.X] = ' ';
 
+                            Console.SetCursorPosition(thisMonster.X, thisMonster.Y + 1);
+                            Console.ForegroundColor = ConsoleColor.Gray;
+
+                            Console.Write(' ');
+
+
+                            //map.mapArray[thisMonster.Y][thisMonster.X] = 'M';
+                            Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write('M');
                             Thread.Sleep(thisMonster.FreezeTime);
                         }
 
@@ -218,6 +250,17 @@ public class Program
 
                             //Console.Write('M');
                             //map.mapArray[thisMonster.Y][thisMonster.X] = 'M'; //to change the position in map
+                            //map.mapArray[thisMonster.Y][thisMonster.X] = ' ';
+
+                            Console.SetCursorPosition(thisMonster.X, thisMonster.Y - 1);
+                            Console.ForegroundColor = ConsoleColor.Gray;
+
+                            Console.Write(' ');
+
+                            //map.mapArray[thisMonster.Y][thisMonster.X] = 'M';
+                            Console.SetCursorPosition(thisMonster.X, thisMonster.Y);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write('M');
 
                             Thread.Sleep(thisMonster.FreezeTime);
                         }

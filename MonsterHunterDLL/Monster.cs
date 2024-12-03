@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 ////Revision history:
 /// Mahan Poor Hamidian     2024/11/20      Created Monster Object 
@@ -18,11 +19,11 @@ namespace MonsterHunterDLL
         //constant
         private int FREEZE_TIME = 2000;
         public Direction monsterDirection;
-        public int pixelsToMove = 50; //use constant
+        public int pixelsToMove = 2; //use constant
         public bool canAttack;
         public bool isRemoved = false;
         public int worth = 100;
-
+        public PictureBox MonsterPictureBox;
         //constructor
 
         // The constructor should set the monster freeze time to 2 second. It should also receive a 
@@ -105,19 +106,22 @@ namespace MonsterHunterDLL
 
             else
             {
+                
                 mapArray[this.Y][this.X] = ' ';
-                Console.SetCursorPosition(this.X, this.Y);
-                Console.ForegroundColor = ConsoleColor.Gray;
 
-                Console.Write(' ');
+                //Console.SetCursorPosition(this.X, this.Y);
+                //Console.ForegroundColor = ConsoleColor.Gray;
+
+                //Console.Write(' ');
 
                 this.X += Xvelocity;
                 this.Y += Yvelocity;
 
                 mapArray[this.Y][this.X] = 'M';
-                Console.SetCursorPosition(this.X, this.Y);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write('M');
+                //Console.SetCursorPosition(this.X, this.Y);
+                //Console.ForegroundColor = ConsoleColor.Red;
+                //Console.Write('M');
+                
                 return true;// then it returns true
 
             }
