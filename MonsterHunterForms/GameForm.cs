@@ -357,7 +357,7 @@ namespace MonsterHunterForms
 
             return directionValid ? newDirection : Monster.Direction.None;
         }
-
+            
 
         private void moveMonstersSlowlyInChildThread()
         {
@@ -370,7 +370,7 @@ namespace MonsterHunterForms
                 Thread.Sleep(sleepTime);
                 //picPlayer.Top++; //will crash, cannot access controls from child threads
                 //call the delgate ("bridge between the threads) to mvoe the picBox
-                Invoke(new moveMonsterBetweenThreads(moveMonsterByOneFrame));
+                 Invoke(new moveMonsterBetweenThreads(moveMonsterByOneFrame));
             }
         }
 
